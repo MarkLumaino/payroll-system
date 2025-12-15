@@ -1,6 +1,6 @@
 import {redirect} from 'next/navigation'
 
-function MenuCard({ title, icon }) {
+export default function Home() {
   return (
     redirect('/login')
   );

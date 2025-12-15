@@ -26,12 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <header>
+        <head>
         <link    
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
 />
-      </header>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
