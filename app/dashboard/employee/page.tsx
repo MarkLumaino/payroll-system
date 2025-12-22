@@ -1,3 +1,8 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 export default function EmployeeList() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#050c2a] to-[#020617] p-6 text-white">
@@ -9,11 +14,11 @@ export default function EmployeeList() {
             <i className="bi bi-arrow-left"></i>
           </button>
 
-          <select className="bg-[#020617] border border-cyan-400 text-sm px-3 py-2 rounded w-48">
+          <select className="bg-[#020617] border border-cyan-100 text-sm px-3 py-2 rounded w-48">
             <option>Payroll Group</option>
           </select>
 
-          <select className="bg-[#020617] border border-cyan-400 text-sm px-3 py-2 rounded w-48">
+          <select className="bg-[#020617] border border-cyan-100 text-sm px-3 py-2 rounded w-48">
             <option>Company</option>
           </select>
         </div>
@@ -29,11 +34,11 @@ export default function EmployeeList() {
       </div>
 
       {/* TABLE */}
-      <div className="border-2 border-cyan-400 rounded-lg overflow-hidden">
+      <div className="border-1 border-cyan-60 rounded-lg overflow-hidden">
 
         {/* TABLE HEADER */}
         <div className="grid grid-cols-[1fr_2fr_2fr_2fr_1.5fr_1.5fr_1fr]
-                        bg-[#020617] border-b border-cyan-400 text-sm font-semibold">
+                        bg-[#020617] border-b border-cyan-100 text-sm font-semibold">
           <HeaderCell>ID no</HeaderCell>
           <HeaderCell>Name</HeaderCell>
           <HeaderCell>
@@ -54,7 +59,7 @@ export default function EmployeeList() {
         {/* ROW 1 */}
         <EmployeeRow
           id="17-50"
-          name="Angana, Erika Maika O."
+          name="Maika, Erika"
           position="Admin Head"
           branch="Easyfis Corporation"
           department="Admin"
@@ -64,7 +69,7 @@ export default function EmployeeList() {
         {/* ROW 2 */}
         <EmployeeRow
           id="17-51"
-          name="Angana, Erika Maika O."
+          name="Maika, Erika Second"
           position="Admin Head"
           branch="Easyfis Corporation"
           department="Admin"
@@ -84,6 +89,7 @@ function HeaderCell({
 }) {
   return <div className={`p-3 ${className}`}>{children}</div>;
 }
+
 function EmployeeRow({
   id,
   name,
@@ -99,10 +105,22 @@ function EmployeeRow({
   department: string;
   division: string;
 }) {
-  return (
-    <div className="grid grid-cols-[1fr_2fr_2fr_2fr_1.5fr_1.5fr_1fr]
-                    border-b border-cyan-400 text-sm items-center">
+  const router = useRouter();
 
+  return (
+    <div
+      onClick={() => router.push(`/dashboard/employee/EmployeeDetails?id=${id}`)}
+      className="
+        grid grid-cols-[1fr_2fr_2fr_2fr_1.5fr_1.5fr_1fr]
+        border-b border-cyan-60
+        text-sm
+        items-center
+        cursor-pointer
+        hover:bg-[#0a1a40]
+        active:bg-[#112255]
+        transition
+      "
+    >
       <Cell>{id}</Cell>
       <Cell>{name}</Cell>
       <Cell>{position}</Cell>
@@ -110,21 +128,30 @@ function EmployeeRow({
       <Cell>{department}</Cell>
       <Cell>{division}</Cell>
 
-      <Cell className="flex justify-center gap-3 text-lg">
-        <i className="bi bi-check-square cursor-pointer"></i>
-        <i className="bi bi-pencil-square cursor-pointer"></i>
-        <i className="bi bi-trash cursor-pointer"></i>
-      </Cell>
+   <Cell className="flex justify-center gap-3 text-lg">
+  <div onClick={(e) => e.stopPropagation()} className="flex gap-3">
+    <i className="bi bi-check-square cursor-pointer"></i>
+    <i className="bi bi-pencil-square cursor-pointer"></i>
+    <i className="bi bi-trash cursor-pointer"></i>
+  </div>
+</Cell>
 
     </div>
   );
 }
+
 function Cell({
   children,
   className = "",
+  onClick,
 }: {
   children: React.ReactNode;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }) {
-  return <div className={`p-3 ${className}`}>{children}</div>;
+  return (
+    <div onClick={onClick} className={`p-3 ${className}`}>
+      {children}
+    </div>
+  );
 }

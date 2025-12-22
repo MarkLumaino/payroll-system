@@ -1,9 +1,14 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
-export default function EmployeeHeader() {
+type EmployeeHeaderProps = {
+  employeeId: string;
+};
+
+export default function EmployeeHeader({ employeeId }: EmployeeHeaderProps) {
   const router = useRouter();
+
   return (
     <div className="flex items-center justify-between mb-6">
 
@@ -11,7 +16,7 @@ export default function EmployeeHeader() {
       <div className="flex items-center gap-4">
 
         {/* Back Button */}
-       <button
+        <button
           onClick={() => router.push("/dashboard/employee")}
           className="cursor-pointer hover:text-blue-400"
         >
@@ -37,7 +42,7 @@ export default function EmployeeHeader() {
         {/* Employee ID */}
         <div>
           <div className="text-xs text-white/60">Employee ID</div>
-          <div className="text-sm font-medium">17-50</div>
+          <div className="text-sm font-medium">{employeeId}</div>
         </div>
 
       </div>
