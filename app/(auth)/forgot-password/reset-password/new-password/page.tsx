@@ -1,0 +1,88 @@
+"use client";
+import { useRouter } from "next/navigation";
+
+export default function NewPasswordPage() {
+ const router = useRouter();
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#020c2a] to-[#071a3d] px-4">
+
+      {/* Logo */}
+      <div className="mb-8 flex items-center gap-2 text-white">
+        <img
+          src="https://rocksontech.com/wp-content/uploads/2024/12/RS_LOGO_LANDSCAPE_WHITE.svg"
+          alt="Logo"
+         className="h-12 w-auto"
+        />
+      </div>
+
+      {/* Card */}
+      <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#1b2b4a] to-[#0f1f3a] shadow-2xl px-8 py-10 text-white">
+
+        {/* Icon */}
+        <div className="flex justify-center mb-4">
+          <div className="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center">
+            <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-blue-600"
+                >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                />
+              </svg>  
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-center text-xl font-semibold mb-2">
+          Reset password
+        </h1>
+
+        {/* Description */}
+        <p className="text-center text-sm text-slate-300 mb-6">
+          Please enter your new password and confirm it.
+        </p>
+
+        {/* New Password */}
+        <div className="mb-4">
+          <label className="block text-sm text-slate-300 mb-1">
+            New password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter your new password"
+            className="text-white w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 "
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div className="mb-6">
+          <label className="block text-sm text-slate-300 mb-1">
+            Confirm password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter confirm password"
+            className="text-white w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 "
+          />
+        </div>
+
+        {/* Button */}
+        <button
+         onClick={() => router.push("/forgot-password/reset-password/new-password/success-password")}
+
+          className="w-full py-2.5 rounded-md bg-blue-600 hover:bg-blue-700 transition font-semibold"
+        >
+          Confirm
+        </button>
+
+      </div>
+    </div>
+  );
+}
