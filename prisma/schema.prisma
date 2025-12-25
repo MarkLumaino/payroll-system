@@ -5,3 +5,146 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model educationandwork {
+  ID                        Int       @id @default(autoincrement())
+  EmployeeID                Int
+  InstituteOrCompanyAddress String?   @db.VarChar(100)
+  CourseOrPosition          String?   @db.VarChar(100)
+  ContactNumber             String?   @db.VarChar(20)
+  DateFrom                  DateTime? @db.Date
+  DateTo                    DateTime? @db.Date
+  Remarks                   String?   @db.VarChar(100)
+  FilePath                  String?   @db.VarChar(255)
+  employees                 employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "educationandwork_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+model employeedetails {
+  ID                Int       @id @default(autoincrement())
+  EmployeeID        Int
+  LastName          String    @db.VarChar(50)
+  FirstName         String    @db.VarChar(50)
+  MiddleName        String?   @db.VarChar(50)
+  ExtensionName     String?   @db.VarChar(50)
+  BiometricIDNumber Int?
+  DateHired         DateTime  @db.Date
+  DateResigned      DateTime? @db.Date
+  Address           String?   @db.VarChar(100)
+  ZipCode           String?   @db.VarChar(10)
+  PhoneNumber       String?   @db.VarChar(20)
+  CellPhoneNumber   String?   @db.VarChar(20)
+  EmailAddress      String?   @db.VarChar(100)
+  DateOfBirth       DateTime? @db.Date
+  PlaceOfBirth      String?   @db.VarChar(100)
+  BirthZipCode      String?   @db.VarChar(10)
+  Sex               String?   @db.VarChar(10)
+  CivilStatus       String?   @db.VarChar(20)
+  Citizenship       String?   @db.VarChar(50)
+  Religion          String?   @db.VarChar(50)
+  Height            Int?
+  Weight            Int?
+  BloodType         String?   @db.VarChar(10)
+  TshirtType        String?   @db.VarChar(10)
+  ProfileFilePath   String?   @db.VarChar(255)
+  employees         employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "employeedetails_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+model employees {
+  ID                 Int                  @id @default(autoincrement())
+  IDNumber           Int                  @unique(map: "IDNumber")
+  FullName           String               @db.VarChar(100)
+  Position           String               @db.VarChar(50)
+  Branch             String               @db.VarChar(50)
+  Department         String               @db.VarChar(50)
+  Division           String?              @db.VarChar(50)
+  Status             String               @db.VarChar(20)
+  educationandwork   educationandwork[]
+  employeedetails    employeedetails[]
+  familyandcontacts  familyandcontacts[]
+  memo               memo[]
+  payrollinformation payrollinformation[]
+}
+
+model familyandcontacts {
+  ID                  Int       @id @default(autoincrement())
+  EmployeeID          Int
+  FirstName           String    @db.VarChar(50)
+  MiddleName          String?   @db.VarChar(50)
+  LastName            String    @db.VarChar(50)
+  ContactNumber       String?   @db.VarChar(20)
+  Address             String?   @db.VarChar(100)
+  Relation            String?   @db.VarChar(50)
+  ContactForEmergency Int?      @default(0) @db.TinyInt
+  employees           employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "familyandcontacts_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+model memo {
+  ID         Int       @id @default(autoincrement())
+  EmployeeID Int
+  MemoDate   DateTime  @db.Date
+  Subject    String    @db.VarChar(100)
+  FilePath   String?   @db.VarChar(255)
+  employees  employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "memo_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+model payrollinformation {
+  ID                      Int       @id @default(autoincrement())
+  EmployeeID              Int
+  GSISNumber              String?   @db.VarChar(50)
+  SSSNumber               String?   @db.VarChar(50)
+  SSSAddOn                Decimal?  @db.Decimal(10, 2)
+  SSSGrossSalary          Decimal?  @db.Decimal(10, 2)
+  HDMFNumber              String?   @db.VarChar(50)
+  HDMFType                String?   @db.VarChar(50)
+  HDMFAddOn               Decimal?  @db.Decimal(10, 2)
+  PHICNumber              String?   @db.VarChar(50)
+  TIN                     String?   @db.VarChar(50)
+  TaxCode                 String?   @db.VarChar(20)
+  TaxTable                String?   @db.VarChar(20)
+  DepBranchCode           String?   @db.VarChar(20)
+  ATMAccountNumber        String?   @db.VarChar(50)
+  Company                 String?   @db.VarChar(50)
+  Branch                  String?   @db.VarChar(50)
+  Department              String?   @db.VarChar(50)
+  Position                String?   @db.VarChar(50)
+  Division                String?   @db.VarChar(50)
+  PayrollGroup            String?   @db.VarChar(50)
+  PayrollType             String?   @db.VarChar(50)
+  GLAccount               String?   @db.VarChar(50)
+  FixDays                 Int?
+  FixHrs                  Int?
+  MonthlyRate             Decimal?  @db.Decimal(10, 2)
+  PayrollRate             Decimal?  @db.Decimal(10, 2)
+  DailyRate               Decimal?  @db.Decimal(10, 2)
+  AbsentDailyRate         Decimal?  @db.Decimal(10, 2)
+  HourlyRate              Decimal?  @db.Decimal(10, 2)
+  NightHourlyRate         Decimal?  @db.Decimal(10, 2)
+  OvertimeHourlyRate      Decimal?  @db.Decimal(10, 2)
+  OvertimeNightHourlyRate Decimal?  @db.Decimal(10, 2)
+  TardyHourlyRate         Decimal?  @db.Decimal(10, 2)
+  ShiftCode               String?   @db.VarChar(50)
+  IsMinimumWage           Int?      @default(0) @db.TinyInt
+  employees               employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "payrollinformation_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+model shiftcode {
+  ID        Int      @id @default(autoincrement())
+  ShiftDate DateTime @db.Date
+}
+
+model users {
+  ID           Int    @id @default(autoincrement())
+  Username     String @unique(map: "Username") @db.VarChar(50)
+  FullName     String @db.VarChar(100)
+  PasswordHash String @db.VarChar(255)
+}
