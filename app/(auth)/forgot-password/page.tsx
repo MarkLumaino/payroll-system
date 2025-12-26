@@ -8,7 +8,7 @@ export default function PasswordCodePage() {
   const [error, setError] = useState("")
    const sendOtp = async () => {
     setError("")
-    if (!email) return setError("Email is required")s
+    if (!email) return setError("Email is required")
 
     setLoading(true)
     const res = await fetch("/api/auth/send-otp", {
