@@ -6,6 +6,13 @@ datasource db {
   provider = "mysql"
 }
 
+model users {
+  ID           Int    @id @default(autoincrement())
+  Username     String @unique(map: "Username") @db.VarChar(50)
+  FullName     String @db.VarChar(100)
+  PasswordHash String @db.VarChar(255)
+}
+
 model educationandwork {
   ID                        Int       @id @default(autoincrement())
   EmployeeID                Int
@@ -54,19 +61,19 @@ model employeedetails {
 }
 
 model employees {
-  ID                 Int                  @id @default(autoincrement())
-  IDNumber           Int                  @unique(map: "IDNumber")
-  FullName           String               @db.VarChar(100)
-  Position           String               @db.VarChar(50)
-  Branch             String               @db.VarChar(50)
-  Department         String               @db.VarChar(50)
-  Division           String?              @db.VarChar(50)
-  Status             String               @db.VarChar(20)
-  educationandwork   educationandwork[]
-  employeedetails    employeedetails[]
-  familyandcontacts  familyandcontacts[]
-  memo               memo[]
-  payrollinformation payrollinformation[]
+  ID                  Int                   @id @default(autoincrement())
+  IDNumber            Int                   @unique(map: "IDNumber")
+  FullName            String                @db.VarChar(100)
+  Position            String                @db.VarChar(50)
+  Branch              String                @db.VarChar(50)
+  Department          String                @db.VarChar(50)
+  Division            String?               @db.VarChar(50)
+  educationandwork    educationandwork[]
+  employeedetails     employeedetails[]
+  familyandcontacts   familyandcontacts[]
+  memo                memo[]
+  payrollinformation  payrollinformation[]
+  personalinformation PersonalInformation[]
 }
 
 model familyandcontacts {
@@ -142,9 +149,33 @@ model shiftcode {
   ShiftDate DateTime @db.Date
 }
 
-model users {
-  ID           Int    @id @default(autoincrement())
-  Username     String @unique(map: "Username") @db.VarChar(50)
-  FullName     String @db.VarChar(100)
-  PasswordHash String @db.VarChar(255)
+model PersonalInformation {
+  ID              Int                      @id @default(autoincrement())
+  EmployeeID      Int
+  LastName        String                   @db.VarChar(50)
+  FirstName       String                   @db.VarChar(50)
+  MiddleName      String?                  @db.VarChar(50)
+  ExtensionName   String?                  @db.VarChar(50)
+  Sex             personalinformation_Sex?
+  DateOfBirth     DateTime?                @db.Date
+  Age             Int?
+  CivilStatus     String?                  @db.VarChar(20)
+  Citizenship     String?                  @db.VarChar(50)
+  Religion        String?                  @db.VarChar(50)
+  PlaceOfBirth    String?                  @db.VarChar(100)
+  BirthZipCode    String?                  @db.VarChar(10)
+  Height          Int?
+  Weight          Int?
+  BloodType       String?                  @db.VarChar(10)
+  TshirtType      String?                  @db.VarChar(10)
+  ProfileFilePath String?                  @db.VarChar(255)
+  employees       employees                @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "personalinformation_ibfk_1")
+
+  @@index([EmployeeID], map: "EmployeeID")
+}
+
+enum personalinformation_Sex {
+  Male
+  Female
+  Other
 }

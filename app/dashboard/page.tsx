@@ -1,83 +1,59 @@
+"use client";
+
+
+import Section from "../components/Section";
+
 export default function DashboardPage() {
   return (
     <div className="w-full min-h-screen bg-[#000F33] text-white">
-
-   
-
-      {/* CONTENT */}
       <div className="p-6">
-
         <h1 className="text-2xl font-semibold mb-8">Dashboard</h1>
 
         {/* SETUP */}
-        <Section title="Setup">
-          {[
-            ["User", "person"],
-            ["Employee", "people"],
-            ["Company", "building"],
-            ["Mandatory", "list-check"],
-            ["Shift Code", "calendar2-range"],
-            ["Day Type", "brightness-high"],
-            ["Other Income", "plus-circle"],
-            ["Other Deduction", "dash-circle"],
-            ["System Tables", "table"],
+        <Section
+          title="Setup"
+          items={[
+            { title: "User", icon: "person", path: "/dashboard/users" },
+            { title: "Employee", icon: "people", path: "/dashboard/employee" },
+            { title: "Company", icon: "building", path: "/dashboard/company" },
+            { title: "Mandatory", icon: "list-check", path: "/dashboard/mandatory" },
+            { title: "Shift Code", icon: "calendar2-range", path: "/dashboard/shift-code" },
+            { title: "Day Type", icon: "brightness-high", path: "/dashboard/day-type" },
+            { title: "Other Income", icon: "plus-circle", path: "/dashboard/other-income" },
+            { title: "Other Deduction", icon: "dash-circle", path: "/dashboard/other-deduction" },
+            { title: "System Tables", icon: "table", path: "/dashboard/system-tables" },
           ]}
-        </Section>
+        />
 
         {/* ACTIVITIES */}
-        <Section title="Activities">
-          {[
-            ["DTR", "fingerprint"],
-            ["Leave Application", "calendar-x"],
-            ["Overtime Application", "clock-history"],
-            ["Loans", "cash-stack"],
-            ["Payroll Other Income", "plus-circle"],
-            ["Payroll Other Deduction", "dash-circle"],
-            ["Last Withholding", "receipt"],
-            ["Payroll", "currency-dollar"],
-            ["Change Shift", "arrow-repeat"],
+        <Section
+          title="Activities"
+          items={[
+            { title: "DTR", icon: "fingerprint", path: "/dashboard/dtr" },
+            { title: "Leave Application", icon: "calendar-x", path: "/dashboard/leave" },
+            { title: "Overtime Application", icon: "clock-history", path: "/dashboard/overtime" },
+            { title: "Loans", icon: "cash-stack", path: "/dashboard/loans" },
+            { title: "Payroll", icon: "currency-dollar", path: "/dashboard/payroll" },
+            { title: "Change Shift", icon: "arrow-repeat", path: "/dashboard/change-shift" },
           ]}
-        </Section>
+        />
 
         {/* REPORTS */}
-        <Section title="Reports">
-          {[
-            ["DTR Reports", "file-earmark-bar-graph"],
-            ["Payroll Reports", "file-earmark-text"],
-            ["Mandatory Reports", "file-earmark-check"],
-            ["Withholding Tax Reports", "file-earmark-ruled"],
-            ["Leave Reports", "file-earmark-break"],
-            ["Loan Reports", "file-earmark-spreadsheet"],
-            ["Accounting Reports", "file-earmark-plus"],
-            ["ATM/Bank", "credit-card"],
-            ["Demographics", "bar-chart"],
+        <Section
+          title="Reports"
+          items={[
+            { title: "DTR Reports", icon: "file-earmark-bar-graph", path: "/dashboard/reports/dtr" },
+            { title: "Payroll Reports", icon: "file-earmark-text", path: "/dashboard/reports/payroll" },
+            { title: "Mandatory Reports", icon: "file-earmark-check", path: "/dashboard/reports/mandatory" },
+            { title: "Withholding Tax Reports", icon: "file-earmark-ruled", path: "/dashboard/reports/withholding-tax" },
+            { title: "Leave Reports", icon: "printer", path: "/dashboard/reports/leave" },
+            { title: "Loan Reports", icon: "file-earmark-spreadsheet", path: "/dashboard/reports/loans" },
+            { title: "Accounting Reports", icon: "file-earmark-plus", path: "/dashboard/reports/accounting" },
+            { title: "ATM/Bank", icon: "credit-card", path: "/dashboard/reports/atm-bank" },
+            { title: "Demographics", icon: "bar-chart", path: "/dashboard/reports/demographics" },
           ]}
-        </Section>
-
+        />
       </div>
-    </div>
-  );
-}
-
-
-function Section({ title, children }) {
-  return (
-    <div className="mb-12">
-      <h2 className="text-lg font-semibold mb-4">{title}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {children.map(([text, icon]) => (
-          <MenuCard key={text} title={text} icon={icon} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MenuCard({ title, icon }) {
-  return (
-    <div className="bg-[#0A1A40] p-4 rounded-2xl flex flex-col items-center justify-center shadow hover:bg-[#112255] transition cursor-pointer">
-      <i className={`bi bi-${icon} text-white text-4xl mb-3 opacity-90`}></i>
-      <p className="text-sm text-center font-medium">{title}</p>
     </div>
   );
 }

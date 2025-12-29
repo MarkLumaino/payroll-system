@@ -1,4 +1,19 @@
-export default function PayrollInfo() {
+import { payrollinformation } from "@prisma/client";
+
+// PayrollInfo.tsx (PURE COMPONENT)
+export default function PayrollInfo({
+  payroll,
+}: {
+  payroll: payrollinformation | null;
+}) {
+  if (!payroll) {
+    return (
+      <div className="border-2 border-cyan-400 rounded-lg p-6 bg-[#020617] text-white">
+        No payroll information found.
+      </div>
+    );
+  }
+
   return (
     <div className="border-2 border-cyan-400 rounded-lg p-6 bg-[#020617]">
 
@@ -11,67 +26,97 @@ export default function PayrollInfo() {
       {/* GOVERNMENT IDS */}
       <Section title="Government IDs">
         <Grid>
-          <Input label="GSIS Number" value="N/A" />
-          <Input label="SSS Number" value="N/A" />
-          <Input label="SSS Add-on" value="0.00" />
-          <Checkbox label="SSS Gross Salary" />
+          <Input label="GSIS Number" value={payroll.GSISNumber} />
+          <Input label="SSS Number" value={payroll.SSSNumber} />
+          <Input label="SSS Add-on" value={payroll.SSSAddOn?.toString()} />
+          <Checkbox label="SSS Gross Salary" checked={!!payroll.SSSGrossSalary} />
 
-          <Input label="HDMF Number" value="N/A" />
-          <Select label="HDMF Type" value="Value" />
-          <Input label="HDMF Add-on" value="0.00" />
-          <Input label="PHIC Number" value="N/A" />
+          <Input label="HDMF Number" value={payroll.HDMFNumber} />
+          <Input label="HDMF Type" value={payroll.HDMFType} />
+          <Input label="HDMF Add-on" value={payroll.HDMFAddOn?.toString()} />
+          <Input label="PHIC Number" value={payroll.PHICNumber} />
 
-          <Input label="TIN" value="N/A" />
-          <Select label="Tax Code" value="Z" />
-          <Select label="Tax Table" value="Semi-Monthly" />
+          <Input label="TIN" value={payroll.TIN} />
+          <Input label="Tax Code" value={payroll.TaxCode} />
+          <Input label="Tax Table" value={payroll.TaxTable} />
         </Grid>
       </Section>
 
       {/* COMPANY ASSIGNMENTS */}
       <Section title="Company Assignments">
         <Grid>
-          <Select label="Company" value="ICONIC" />
-          <Select label="Branch" value="Easyfis Corporation" />
-          <Select label="Department" value="Software Development" />
-          <Select label="Position" value="Software Development" />
+          <Input label="Company" value={payroll.Company} />
+          <Input label="Branch" value={payroll.Branch} />
+          <Input label="Department" value={payroll.Department} />
+          <Input label="Position" value={payroll.Position} />
 
-          <Select label="Dep Branch Code" value="#Name?" />
-          <Input label="ATM Account No" />
+          <Input label="Dep Branch Code" value={payroll.DepBranchCode} />
+          <Input label="ATM Account No" value={payroll.ATMAccountNumber} />
         </Grid>
       </Section>
 
       {/* PAYROLL SETTINGS */}
       <Section title="Payroll Settings">
         <Grid>
-          <Select label="Division" value="Cebu" />
-          <Select label="Payroll Group" value="Easyfis Corporation" />
-          <Select label="Payroll Type" value="Variable" />
-          <Select label="GL Account" value="Salaries and Wages" />
+          <Input label="Division" value={payroll.Division} />
+          <Input label="Payroll Group" value={payroll.PayrollGroup} />
+          <Input label="Payroll Type" value={payroll.PayrollType} />
+          <Input label="GL Account" value={payroll.GLAccount} />
 
-          <Select label="Shift Code" value="09:00 AM - 06:00 PM RD - Sunday" />
-          <Checkbox label="Is Minimum Wage" />
+          <Input label="Shift Code" value={payroll.ShiftCode} />
+          <Checkbox
+            label="Is Minimum Wage"
+            checked={!!payroll.IsMinimumWage}
+          />
         </Grid>
       </Section>
 
       {/* RATES */}
       <Section title="Rates and Work Setup">
         <Grid>
-          <Input label="Fix No of Days" value="26" />
-          <Input label="Fix No of Hrs" value="8" />
-          <Input label="Monthly Rate" value="50,000.00" />
-          <Input label="Payroll Rate" value="25,000.00" />
+          <Input label="Fix No of Days" value={payroll.FixDays?.toString()} />
+          <Input label="Fix No of Hrs" value={payroll.FixHrs?.toString()} />
+          <Input label="Monthly Rate" value={payroll.MonthlyRate?.toString()} />
+          <Input label="Payroll Rate" value={payroll.PayrollRate?.toString()} />
 
-          <Input label="Daily Rate" value="1,923.08" />
-          <Input label="Absent Daily Rate" value="1,923.08" />
-          <Input label="Hourly Rate" value="240.38" />
-          <Input label="Night Hourly Rate" value="24.04" />
+          <Input label="Daily Rate" value={payroll.DailyRate?.toString()} />
+          <Input label="Absent Daily Rate" value={payroll.AbsentDailyRate?.toString()} />
+          <Input label="Hourly Rate" value={payroll.HourlyRate?.toString()} />
+          <Input label="Night Hourly Rate" value={payroll.NightHourlyRate?.toString()} />
 
-          <Input label="Overtime Hourly Rate" value="300.48" />
-          <Input label="Overtime Night Hourly Rate" value="30.05" />
-          <Input label="Tardy Hourly Rate" value="240.38" />
+          <Input label="Overtime Hourly Rate" value={payroll.OvertimeHourlyRate?.toString()} />
+          <Input label="Overtime Night Hourly Rate" value={payroll.OvertimeNightHourlyRate?.toString()} />
+          <Input label="Tardy Hourly Rate" value={payroll.TardyHourlyRate?.toString()} />
         </Grid>
       </Section>
+    </div>
+  );
+}
 
+
+function Input({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string | number | null;
+}) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <input
+        value={value ?? ""}
+        readOnly
+        className="mt-1 w-full bg-[#050c2a] border border-white/20 rounded px-2 py-1 text-sm"
+      />
+    </div>
+  );
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-xs text-white/60 mb-1">
+      {children}
     </div>
   );
 }
@@ -101,61 +146,24 @@ function Grid({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Input({
+function Checkbox({
   label,
-  value,
+  checked = false,
 }: {
   label: string;
-  value?: string;
+  checked?: boolean;
 }) {
-  return (
-    <div>
-      <Label>{label}</Label>
-      <input
-        value={value}
-        readOnly
-        className="mt-1 w-full bg-[#050c2a] border border-white/20 rounded px-2 py-1 text-sm"
-      />
-    </div>
-  );
-}
-
-function Select({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string;
-}) {
-  return (
-    <div>
-      <Label>{label}</Label>
-      <select
-        defaultValue={value}
-        className="mt-1 w-full bg-[#050c2a] border border-white/20 rounded px-2 py-1 text-sm"
-      >
-        <option>{value}</option>
-      </select>
-    </div>
-  );
-}
-
-function Checkbox({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-2 mt-6">
       <input
         type="checkbox"
-        className="accent-blue-500 w-4 h-4"
+        checked={checked}
+        readOnly
+        className="accent-blue-500 w-4 h-4 cursor-not-allowed"
       />
       <span className="text-sm">{label}</span>
     </div>
   );
 }
 
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-xs text-white/60">
-      {children}
-    </div>
-  );
-}
+

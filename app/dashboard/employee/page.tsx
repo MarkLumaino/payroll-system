@@ -1,33 +1,44 @@
-export default function EmployeeList() {
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import React from "react";
+
+// app/dashboard/employee/[id]/page.tsx
+import PayrollInfo from "./tabs/PayrollInfo";
+
+
+
+
+type EmployeeRowProps = {
+  id: number;
+  name: string;
+  position: string;
+  branch: string;
+  department: string;
+  division: string | null;
+};
+
+type CellProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+
+type HeaderCellProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+
+export default async function EmployeeList() {
+  const employees = await prisma.employees.findMany({
+    orderBy: { ID: "asc" },
+  });
+
   return (
+
     <div className="min-h-screen bg-gradient-to-b from-[#050c2a] to-[#020617] p-6 text-white">
 
-      {/* TOP BAR */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <button className="text-xl">
-            <i className="bi bi-arrow-left"></i>
-          </button>
-
-          <select className="bg-[#020617] border border-cyan-400 text-sm px-3 py-2 rounded w-48">
-            <option>Payroll Group</option>
-          </select>
-
-          <select className="bg-[#020617] border border-cyan-400 text-sm px-3 py-2 rounded w-48">
-            <option>Company</option>
-          </select>
-        </div>
-
-        <div className="flex gap-3">
-          <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm">
-            LOCK
-          </button>
-          <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-sm">
-            UNLOCK
-          </button>
-        </div>
-      </div>
-
+ 
       {/* TABLE */}
       <div className="border-2 border-cyan-400 rounded-lg overflow-hidden">
 
@@ -51,39 +62,34 @@ export default function EmployeeList() {
           <HeaderCell className="text-center">L</HeaderCell>
         </div>
 
-        {/* ROW 1 */}
-        <EmployeeRow
-          id="17-50"
-          name="Angana, Erika Maika O."
-          position="Admin Head"
-          branch="Easyfis Corporation"
-          department="Admin"
-          division="Cebu"
-        />
+        {/* ROWS FROM DATABASE */}
+        {employees.map((emp) => (
+ <Link
+    key={emp.ID}
+    href={`/dashboard/employee/${emp.ID}`}
+    className="block hover:bg-white/5"
+  >
 
-        {/* ROW 2 */}
-        <EmployeeRow
-          id="17-51"
-          name="Angana, Erika Maika O."
-          position="Admin Head"
-          branch="Easyfis Corporation"
-          department="Admin"
-          division="Cebu"
-        />
-
+          <EmployeeRow
+            id={emp.IDNumber}
+            name={emp.FullName}
+            position={emp.Position}
+            branch={emp.Branch}
+            department={emp.Department}
+            division={emp.Division}
+          />
+          </Link>
+        ))}
       </div>
     </div>
   );
 }
-function HeaderCell({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+
+function HeaderCell({ children, className = "" }: HeaderCellProps) {
   return <div className={`p-3 ${className}`}>{children}</div>;
 }
+
+
 function EmployeeRow({
   id,
   name,
@@ -91,14 +97,7 @@ function EmployeeRow({
   branch,
   department,
   division,
-}: {
-  id: string;
-  name: string;
-  position: string;
-  branch: string;
-  department: string;
-  division: string;
-}) {
+}: EmployeeRowProps) {
   return (
     <div className="grid grid-cols-[1fr_2fr_2fr_2fr_1.5fr_1.5fr_1fr]
                     border-b border-cyan-400 text-sm items-center">
@@ -115,16 +114,12 @@ function EmployeeRow({
         <i className="bi bi-pencil-square cursor-pointer"></i>
         <i className="bi bi-trash cursor-pointer"></i>
       </Cell>
-
     </div>
   );
 }
-function Cell({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+
+
+
+function Cell({ children, className = "" }: CellProps) {
   return <div className={`p-3 ${className}`}>{children}</div>;
 }

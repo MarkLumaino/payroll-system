@@ -3,13 +3,14 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 // Create the adapter for your DB
 const adapter = new PrismaMariaDb({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "testtest",
-  database: "payroll_system",
+  host: process.env.DB_HOST!,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER!,         //check .env file for username
+  password: process.env.DB_PASSWORD!, //check .env file for password
+  database: process.env.DB_NAME!,     //check .env file for database name
   connectionLimit: 5,
 });
+
 
 // Singleton for Next.js App Router
 const globalForPrisma = globalThis as unknown as {

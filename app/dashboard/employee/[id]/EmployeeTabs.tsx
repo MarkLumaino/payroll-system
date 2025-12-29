@@ -8,8 +8,17 @@ import ShiftCode from "../tabs/ShiftCode";
 import FamilyContact from "../tabs/FamilyContact";
 import EducationAndWork from "../tabs/EducationAndWork";
 import EmployeeHeader from "../EmployeeHeader";
+import { useParams } from "next/navigation";
+import { payrollinformation } from "@prisma/client";
 
+type EmployeeTabsProps = {
+  employee: any; // you can strongly type later
+  payroll: {
+    [key: string]: string | number | boolean | null;
+  } | null;
+};
 
+  
 type Tab =
   | "general"
   | "payroll"
@@ -21,7 +30,7 @@ type Tab =
 
 
 
-export default function EmployeePage() {
+export default function EmployeeTabs({employee, payroll}: EmployeeTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>("general");
 
   return (
@@ -29,7 +38,6 @@ export default function EmployeePage() {
      <div className="min-h-screen bg-gradient-to-b from-[#050c2a] to-[#020617] p-6 text-white">
 
     {/* 👤 EMPLOYEE PROFILE HEADER */}
-    <EmployeeHeader />
 
     {/* 🔹 TABS (ALWAYS VISIBLE) */}
     <div className="flex gap-6 text-sm mb-6 border-b border-white/20 pb-2">
@@ -43,8 +51,13 @@ export default function EmployeePage() {
     </div>
 
     {/* 🔹 TAB CONTENT */}
-    {activeTab === "general" && <GeneralInfo />}
-    {activeTab === "payroll" && <PayrollInfo />}
+   {activeTab === "general" && (
+  <GeneralInfo
+    personalInfo={employee.personalinformation?.[0] ?? null}
+  />
+)}
+
+{activeTab === "payroll" && <PayrollInfo payroll={payroll} />}
     {activeTab === "memo" && <Memo />}
     {activeTab === "shift" && <ShiftCode/>}
     {activeTab === "family" && <FamilyContact/>}
@@ -91,5 +104,8 @@ function Placeholder({ title }: { title: string }) {
     </div>
   );
 }
+
+
+
 
 
