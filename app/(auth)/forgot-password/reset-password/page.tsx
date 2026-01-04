@@ -1,47 +1,53 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function ForgotPasswordPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const sendOtp = async () => {
+  const handleVerify = async () => {
     setError("");
 
-    if (!email) {
-      setError("Email is required");
+    // 🔒 Frontend restriction
+    if (!code.trim()) {
+      setError("Please enter the verification code");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/send-otp", {
+      const res = await fetch("/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ code }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to send OTP");
+      const data = await res.json();
+      setLoading(false);
+
+      if (!data.success) {
+        // ❌ Wrong code → stay on page
+        setError(data.message || "Invalid verification code");
+        return;
       }
 
-      // ✅ redirect to OTP page
-      router.push(`/forgot-password/reset-password?email=${email}`);
+      // ✅ Correct code → proceed
+      router.push("../forgot-password/reset-password/new-password");
     } catch (err) {
-      setError("Failed to send OTP. Please try again.");
-    } finally {
       setLoading(false);
+      setError("Something went wrong. Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#020c2a] to-[#071a3d] px-4">
+
       {/* Logo */}
       <div className="mb-8 text-white flex items-center gap-2">
         <img
@@ -53,6 +59,7 @@ export default function ForgotPasswordPage() {
 
       {/* Card */}
       <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#1b2b4a] to-[#0f1f3a] shadow-2xl p-8 text-white">
+
         {/* Icon */}
         <div className="flex justify-center mb-4">
           <div className="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center">
@@ -78,37 +85,38 @@ export default function ForgotPasswordPage() {
           Reset password
         </h1>
 
-        {/* Description */}
         <p className="text-center text-sm text-slate-300 mb-6">
-          Please enter your registered email address. We’ll send you a verification
-          code, and once confirmed, you can create a new password.
+          Please enter the verification code sent to your email.
         </p>
 
-        {/* Email Input */}
-        <div className="mb-5">
+        {/* Input */}
+        <div className="mb-4">
           <label className="block text-sm text-slate-300 mb-1">
-            Enter Email
+            Enter Code
           </label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="text-white w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder="Enter your verification code"
+            className="text-white w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
-
-          {error && (
-            <p className="text-red-400 text-sm mt-2">{error}</p>
-          )}
         </div>
+
+        {/* Error message */}
+        {error && (
+          <p className="mb-4 text-sm text-red-400 text-center">
+            {error}
+          </p>
+        )}
 
         {/* Button */}
         <button
-          onClick={sendOtp}
+          onClick={handleVerify}
           disabled={loading}
-          className="w-full rounded-lg bg-blue-600 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
+          className="w-full rounded-lg bg-blue-600 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? "Sending..." : "Send Code"}
+          {loading ? "Verifying..." : "Verify Code"}
         </button>
       </div>
     </div>

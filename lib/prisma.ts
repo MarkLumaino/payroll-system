@@ -1,13 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+const Prisma =new PrismaClient();
 
 // Create the adapter for your DB
 const adapter = new PrismaMariaDb({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "testtest",
-  database: "payroll_system",
+  password: "w09184835888",
+  database: "forgot_password_db",
   connectionLimit: 5,
 });
 
@@ -17,8 +18,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+      new PrismaClient({
     adapter, // ← MUST include this
     log: ["query", "error"],
   });
