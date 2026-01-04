@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import React from "react";
+import Footer from "../../components/Footer";
+
 
 // app/dashboard/employee/[id]/page.tsx
 import PayrollInfo from "./tabs/PayrollInfo";

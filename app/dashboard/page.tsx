@@ -2,6 +2,7 @@
 
 
 import Section from "../components/Section";
+import Footer from "../components/Footer";
 
 export default function DashboardPage() {
   return (
@@ -52,8 +53,13 @@ export default function DashboardPage() {
             { title: "ATM/Bank", icon: "credit-card", path: "/dashboard/reports/atm-bank" },
             { title: "Demographics", icon: "bar-chart", path: "/dashboard/reports/demographics" },
           ]}
+          
         />
       </div>
+                <Footer/>
+
     </div>
+    
   );
+
 }

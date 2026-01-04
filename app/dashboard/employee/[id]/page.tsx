@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import EmployeeTabs from "./EmployeeTabs";
+import Footer from "../../../components/Footer";
 import PayrollInfo from "../tabs/PayrollInfo";
 import { notFound } from "next/navigation";
 import EmployeeHeader from "../EmployeeHeader";
@@ -21,15 +22,13 @@ export default async function EmployeePage({
   }
 
 
-
-
   const payrollRaw = await prisma.payrollinformation.findFirst({ //will show payinfo depends on employee id
     where: {
       EmployeeID: employeeId, 
     },
   });
 
-    const employee = await prisma.employees.findUnique({
+    const employee = await prisma.employees.findUnique({ //personal ifo
     where: { ID: employeeId },
     include: {
             personalinformation: true,
@@ -41,7 +40,6 @@ export default async function EmployeePage({
     if (!employee) {
   notFound();
 }
-
 
 const payroll = payrollRaw
   ? {
@@ -73,6 +71,8 @@ return (
       employee={employee}
       payroll={payroll}
     />
+
   </div>
+  
 );
 }

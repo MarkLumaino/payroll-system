@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation"; 
+import Footer from "../../components/Footer";
 
 
 export default function UserPage() {
@@ -90,3 +91,4 @@ export default function UserPage() {
     </div>
   );
 }
+<Footer/>

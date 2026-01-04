@@ -3,6 +3,7 @@
 import { useState } from "react";
 import GeneralInfo from "../tabs/GeneralInfo";
 import PayrollInfo from "../tabs/PayrollInfo";
+import Footer from "../../../components/Footer";
 import Memo from "../tabs/Memo";
 import ShiftCode from "../tabs/ShiftCode";
 import FamilyContact from "../tabs/FamilyContact";
@@ -104,6 +105,7 @@ function Placeholder({ title }: { title: string }) {
     </div>
   );
 }
+<Footer/>
 
 
 

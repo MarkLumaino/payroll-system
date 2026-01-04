@@ -98,7 +98,6 @@ model memo {
   Subject    String    @db.VarChar(100)
   FilePath   String?   @db.VarChar(255)
   employees  employees @relation(fields: [EmployeeID], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "memo_ibfk_1")
-
   @@index([EmployeeID], map: "EmployeeID")
 }
 
