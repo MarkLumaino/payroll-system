@@ -16,18 +16,18 @@ export default function DashboardPage() {
           items={[
             { title: "User", icon: "person", path: "/dashboard/users" },
             { title: "Employee", icon: "people", path: "/dashboard/employee" },
-            { title: "Company", icon: "building", path: "/dashboard/company" },
+           /*  { title: "Company", icon: "building", path: "/dashboard/company" },
             { title: "Mandatory", icon: "list-check", path: "/dashboard/mandatory" },
             { title: "Shift Code", icon: "calendar2-range", path: "/dashboard/shift-code" },
             { title: "Day Type", icon: "brightness-high", path: "/dashboard/day-type" },
             { title: "Other Income", icon: "plus-circle", path: "/dashboard/other-income" },
             { title: "Other Deduction", icon: "dash-circle", path: "/dashboard/other-deduction" },
-            { title: "System Tables", icon: "table", path: "/dashboard/system-tables" },
+            { title: "System Tables", icon: "table", path: "/dashboard/system-tables" }, */
           ]}
         />
 
         {/* ACTIVITIES */}
-        <Section
+    {/*     <Section
           title="Activities"
           items={[
             { title: "DTR", icon: "fingerprint", path: "/dashboard/dtr" },
@@ -38,9 +38,9 @@ export default function DashboardPage() {
             { title: "Change Shift", icon: "arrow-repeat", path: "/dashboard/change-shift" },
           ]}
         />
-
+ */}
         {/* REPORTS */}
-        <Section
+    {/*     <Section
           title="Reports"
           items={[
             { title: "DTR Reports", icon: "file-earmark-bar-graph", path: "/dashboard/reports/dtr" },
@@ -54,7 +54,7 @@ export default function DashboardPage() {
             { title: "Demographics", icon: "bar-chart", path: "/dashboard/reports/demographics" },
           ]}
           
-        />
+        /> */}
       </div>
                 <Footer/>
 

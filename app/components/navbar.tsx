@@ -33,9 +33,9 @@ export default function Navbar() {
 
   {/* RIGHT */}
   <div className="flex items-center gap-4">
-    <Icon>🔍</Icon>
-    <Icon>🔔</Icon>
-    <div className="h-8 w-8 rounded-full bg-white/20" />
+    {/* <Icon>🔍</Icon>
+    <Icon>🔔</Icon> */}
+{/*     <div className="h-8 w-8 rounded-full bg-white/20" /> */}
   </div>
 </nav>
   );
