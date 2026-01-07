@@ -1,102 +1,5 @@
-export default function GeneralInfo() {
-  return (
-    <div className="grid grid-cols-3 gap-6">
-
-      {/* LEFT COLUMN */}
-      <div className="col-span-2 space-y-6">
-
-        {/* PERSONAL INFORMATION */}
-        <Card title="Personal Information">
-          <Grid>
-            <Field label="Full Name" value="Angana, Erika Maika O." />
-            <Field label="Age" value="32" />
-            <Field label="Sex" value="Female" />
-
-            <Divider />
-
-            <Field label="Last Name" value="Angana" />
-            <Field label="First Name" value="Erika Maika" />
-            <Field label="Middle Name" value="Omega" />
-            <Field label="Extension Name" value="—" />
-
-            <Divider />
-
-            <Field label="Civil Status" value="Single" />
-            <Field label="Citizenship" value="Filipino" />
-            <Field label="Religion" value="Roman Catholic" />
-
-            <Divider />
-
-            <Field label="Date of Birth" value="03/05/1993" />
-            <Field label="Place of Birth" value="Mandaue, Cebu City" />
-            <Field label="Birth Zip Code" value="6014" />
-
-            <Divider />
-
-            <Field label="Height (cm)" value="0" />
-            <Field label="Weight (kg)" value="0" />
-            <Field label="Blood Type" value="—" />
-            <Field label="T-Shirt Type" value="—" />
-          </Grid>
-        </Card>
-
-        {/* ADDRESS INFORMATION */}
-        <Card title="Address Information">
-          <div className="grid grid-cols-3 gap-4 text-sm">
-            <div className="col-span-2">
-              <Label>Residential Address</Label>
-              <Value>
-                Blk 6 Lot 23 Windfields Subd. Danglag, Consolacion
-              </Value>
-            </div>
-
-            <div>
-              <Label>Zip Code</Label>
-              <Value>6001</Value>
-            </div>
-
-            <div className="col-span-3 flex justify-end text-blue-400 text-xs cursor-pointer">
-              View on Map →
-            </div>
-
-            <div className="col-span-3">
-              <Label>Notes</Label>
-              <input
-                className="mt-1 w-full bg-[#050c2a] border border-white/20 rounded px-3 py-2 text-sm"
-                placeholder=""
-              />
-            </div>
-          </div>
-        </Card>
-
-      </div>
-
-      {/* RIGHT COLUMN */}
-      <div className="space-y-6">
-
-        {/* CONTACT INFORMATION */}
-        <Card title="Contact Information">
-          <SubTitle>Personal Contact</SubTitle>
-          <div className="space-y-4 text-sm">
-            <Field label="Telephone No" value="N/A" />
-            <Field label="Cellphone Number" value="09923887854" />
-            <Field label="Email" value="akiramaika@gmail.com" />
-          </div>
-        </Card>
-
-        {/* EMPLOYMENT OVERVIEW */}
-        <Card title="Employment Overview">
-          <div className="space-y-4 text-sm">
-            <Field label="Biometric ID Number" value="1" />
-            <Field label="Date Hired" value="08/16/2018" />
-            <Field label="Date Resigned" value="—" />
-          </div>
-        </Card>
-
-      </div>
-    </div>
-  );
-}
+import { PersonalInformation } from "@prisma/client";
+import React from "react";
 
 function Card({
   title,
@@ -124,7 +27,13 @@ function Grid({ children }: { children: React.ReactNode }) {
   return <div className="grid grid-cols-4 gap-4 text-sm">{children}</div>;
 }
 
-function Field({ label, value }: { label: string; value: string }) {
+function Field({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) {
   return (
     <div>
       <Label>{label}</Label>
@@ -153,3 +62,83 @@ function SubTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
+
+type GeneralInfoProps = {
+  personalInfo: any | null;
+};
+
+export default function GeneralInfo({ personalInfo }: GeneralInfoProps) {
+  if (!personalInfo) {
+    return (
+      <div className="text-white/60">
+        No personal information available.
+      </div>
+    );
+  }
+
+  const fullName = `${personalInfo.LastName}, ${personalInfo.FirstName}${
+    personalInfo.MiddleName ? ` ${personalInfo.MiddleName}` : ""
+  }${personalInfo.ExtensionName ? ` ${personalInfo.ExtensionName}` : ""}`;
+
+  return (
+    <div className="grid grid-cols-3 gap-6">
+
+      {/* LEFT COLUMN */}
+      <div className="col-span-2 space-y-6">
+
+        {/* PERSONAL INFORMATION */}
+        <Card title="Personal Information">
+          <Grid>
+            <Field label="Full Name" value={fullName} />
+            <Field label="Age" value={personalInfo.Age?.toString() ?? "—"} />
+            <Field label="Sex" value={personalInfo.Sex ?? "—"} />
+
+            <Divider />
+
+            <Field label="Last Name" value={personalInfo.LastName} />
+            <Field label="First Name" value={personalInfo.FirstName} />
+            <Field label="Middle Name" value={personalInfo.MiddleName ?? "—"} />
+            <Field label="Extension Name" value={personalInfo.ExtensionName ?? "—"} />
+
+            <Divider />
+
+            <Field label="Civil Status" value={personalInfo.CivilStatus ?? "—"} />
+            <Field label="Citizenship" value={personalInfo.Citizenship ?? "—"} />
+            <Field label="Religion" value={personalInfo.Religion ?? "—"} />
+
+            <Divider />
+
+            <Field
+              label="Date of Birth"
+              value={
+                personalInfo.DateOfBirth
+                  ? personalInfo.DateOfBirth.toLocaleDateString()
+                  : "—"
+              }
+            />
+            <Field label="Place of Birth" value={personalInfo.PlaceOfBirth ?? "—"} />
+            <Field label="Birth Zip Code" value={personalInfo.BirthZipCode ?? "—"} />
+
+            <Divider />
+
+            <Field label="Height (cm)" value={personalInfo.Height?.toString() ?? "—"} />
+            <Field label="Weight (kg)" value={personalInfo.Weight?.toString() ?? "—"} />
+            <Field label="Blood Type" value={personalInfo.BloodType ?? "—"} />
+            <Field label="T-Shirt Type" value={personalInfo.TshirtType ?? "—"} />
+          </Grid>
+        </Card>
+
+        {/* ADDRESS INFORMATION (leave as-is for now) */}
+   <Card title="Address Information">
+  <div className="text-sm text-white/60">—</div>
+</Card>
+
+      </div>
+
+      {/* RIGHT COLUMN */}
+      <div className="space-y-6">
+        {/* unchanged */}
+      </div>
+    </div>
+  );
+}

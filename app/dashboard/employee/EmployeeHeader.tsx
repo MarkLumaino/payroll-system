@@ -1,9 +1,20 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
-export default function EmployeeHeader() {
+type EmployeeHeaderProps = {
+  employeeId: number;
+  fullName: string;
+  status: "Active" | "Inactive";
+};
+
+export default function EmployeeHeader({
+  employeeId,
+  fullName,
+  status,
+}: EmployeeHeaderProps) {
   const router = useRouter();
+
   return (
     <div className="flex items-center justify-between mb-6">
 
@@ -11,7 +22,7 @@ export default function EmployeeHeader() {
       <div className="flex items-center gap-4">
 
         {/* Back Button */}
-       <button
+        <button
           onClick={() => router.push("/dashboard/employee")}
           className="cursor-pointer hover:text-blue-400"
         >
@@ -25,9 +36,9 @@ export default function EmployeeHeader() {
 
         {/* Name + Status */}
         <div>
-          <div className="font-semibold leading-tight">Erika Maika</div>
+          <div className="font-semibold leading-tight">{fullName}</div>
           <span className="inline-block bg-blue-600 text-xs px-2 py-0.5 rounded">
-            Active
+            {status}
           </span>
         </div>
 
@@ -37,7 +48,7 @@ export default function EmployeeHeader() {
         {/* Employee ID */}
         <div>
           <div className="text-xs text-white/60">Employee ID</div>
-          <div className="text-sm font-medium">17-50</div>
+          <div className="text-sm font-medium">{employeeId}</div>
         </div>
 
       </div>
@@ -54,3 +65,7 @@ export default function EmployeeHeader() {
     </div>
   );
 }
+type EmployeeTabsProps = {
+  id: number;
+  payroll: any;
+};
