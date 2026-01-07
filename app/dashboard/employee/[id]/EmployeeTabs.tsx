@@ -9,17 +9,13 @@ import ShiftCode from "../tabs/ShiftCode";
 import FamilyContact from "../tabs/FamilyContact";
 import EducationAndWork from "../tabs/EducationAndWork";
 import EmployeeHeader from "../EmployeeHeader";
-import { useParams } from "next/navigation";
 import { payrollinformation } from "@prisma/client";
 
 type EmployeeTabsProps = {
-  employee: any; // you can strongly type later
-  payroll: {
-    [key: string]: string | number | boolean | null;
-  } | null;
+  employee: any;
+  payroll: payrollinformation | null;
 };
 
-  
 type Tab =
   | "general"
   | "payroll"
@@ -29,43 +25,38 @@ type Tab =
   | "education"
   | "history";
 
-
-
-export default function EmployeeTabs({employee, payroll}: EmployeeTabsProps) {
+export default function EmployeeTabs({ employee, payroll }: EmployeeTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>("general");
 
   return (
+    <div className="min-h-screen bg-gradient-to-b from-[#050c2a] to-[#020617] p-6 text-white">
+      
+      {/* 🔹 TABS */}
+      <div className="flex gap-6 text-sm mb-6 border-b border-white/20 pb-2">
+        <TabButton label="General Information" tab="general" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="Payroll Information" tab="payroll" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="Memo" tab="memo" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="Shift Code" tab="shift" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="Family and Contact" tab="family" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="Education and Work" tab="education" activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabButton label="History of Changes" tab="history" activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
 
-     <div className="min-h-screen bg-gradient-to-b from-[#050c2a] to-[#020617] p-6 text-white">
+      {/* 🔹 TAB CONTENT */}
+      {activeTab === "general" && (
+        <GeneralInfo personalInfo={employee.personalinformation?.[0] ?? null} />
+      )}
 
-    {/* 👤 EMPLOYEE PROFILE HEADER */}
+      {activeTab === "payroll" && <PayrollInfo payroll={payroll} />}
 
-    {/* 🔹 TABS (ALWAYS VISIBLE) */}
-    <div className="flex gap-6 text-sm mb-6 border-b border-white/20 pb-2">
-      <TabButton label="General Information" tab="general" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="Payroll Information" tab="payroll" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="Memo" tab="memo" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="Shift Code" tab="shift" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="Family and Contact" tab="family" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="Education and Work" tab="education" activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TabButton label="History of Changes" tab="history" activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab === "memo" && <Memo />}
+      {activeTab === "shift" && <ShiftCode />}
+      {activeTab === "family" && <FamilyContact />}
+      {activeTab === "education" && <EducationAndWork />}
+      {activeTab === "history" && <Placeholder title="History of Changes" />}
+
+      <Footer />
     </div>
-
-    {/* 🔹 TAB CONTENT */}
-   {activeTab === "general" && (
-  <GeneralInfo
-    personalInfo={employee.personalinformation?.[0] ?? null}
-  />
-)}
-
-{activeTab === "payroll" && <PayrollInfo payroll={payroll} />}
-    {activeTab === "memo" && <Memo />}
-    {activeTab === "shift" && <ShiftCode/>}
-    {activeTab === "family" && <FamilyContact/>}
-    {activeTab === "education" && <EducationAndWork/>}
-    {activeTab === "history" && <Placeholder title="History of Changes" />}
-
-  </div>
   );
 }
 
@@ -76,9 +67,9 @@ function TabButton({
   setActiveTab,
 }: {
   label: string;
-  tab: string;
-  activeTab: string;
-  setActiveTab: (tab: any) => void;
+  tab: Tab;
+  activeTab: Tab;
+  setActiveTab: (tab: Tab) => void;
 }) {
   const isActive = activeTab === tab;
 
@@ -93,8 +84,6 @@ function TabButton({
     >
       {label}
     </button>
-
-    
   );
 }
 
@@ -105,9 +94,3 @@ function Placeholder({ title }: { title: string }) {
     </div>
   );
 }
-<Footer/>
-
-
-
-
-
