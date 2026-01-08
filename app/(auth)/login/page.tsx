@@ -1,43 +1,32 @@
 'use client';
 
 import { use, useState } from 'react';
+import Link from 'next/link'
+import api from '@/lib/api';
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-async function handleLogin() {
-  setLoading(true);
-  setError('');
-
-  try {
-    const res = await fetch('http://localhost:3001/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include', // ✅ allow cookie
-      body: JSON.stringify({
-        email: username, 
+  const handleLogin = async () => {
+    try {
+      const res = await api.post('/auth/login', {
+        email,
         password,
-      }),
-    });
+      });
 
-    if (!res.ok) {
-      throw new Error('Invalid email or password');
-    }
+      // ✅ Store token in cookie
+      document.cookie = `token=${res.data.access_token}; path=/`;
 
- 
-
-    window.location.href = '/dashboard';
-  } catch (err: any) {
+      window.location.href = '/dashboard';
+    } catch (err: any) {
     setError(err.message);
   } finally {
     setLoading(false);
   }
-}
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -68,7 +57,6 @@ async function handleLogin() {
         <p className="mb-8 text-center text-sm text-white">
           Please sign in to your account
         </p>
-
         <form
           className="space-y-5"
           onSubmit={(e) => {
@@ -81,8 +69,8 @@ async function handleLogin() {
             <input
               type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="text-white w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-transparent"
             />
           </div>
@@ -112,6 +100,9 @@ async function handleLogin() {
             {loading ? 'LOGGING IN…' : 'LOGIN'}
           </button>
         </form>
+        <div className='mt-2 text-right text-sm mb-8'>
+            <Link href="/register">Register?</Link>
+          </div>
       </div>
     </div>
   );
